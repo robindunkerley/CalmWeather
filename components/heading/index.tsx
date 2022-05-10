@@ -42,7 +42,8 @@ export default Header
 
 const styles = StyleSheet.create({
     container: {
-        height: '100%'
+        height: '100%',
+        justifyContent: 'space-around',
     },
     searchContainer: {
         height: '30%',
@@ -72,18 +73,16 @@ const styles = StyleSheet.create({
     },
     locationText: {
         color: 'black', 
-        fontSize: 25, 
+        fontSize: 26, 
         fontWeight: '700',
-
     },
     weatherDetailsContainer: {
         paddingHorizontal: Theme.padding.paddingHorizontal,
         flexDirection: 'row',
-        height: '50%'
+        height: '30%'
     },
     weatherDetailsBlock: {
         width: '33%',
-
         alignItems: 'center',
         justifyContent: 'center'
     },

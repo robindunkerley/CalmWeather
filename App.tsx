@@ -25,37 +25,46 @@ const App = () => {
 
 
   return (
-    <SafeAreaView style={{height: '100%'}}>
-      <View style={styles.heading}>
-        <Header/>
-      </View>
-      <View style={{height: '80%'}}>
-        <Glassmorphism/>
-      </View>
-      {/* Blur Box Content Container */}
-      <View style={{height: height * 0.45, position: 'absolute', top: height / 2, width: '100%', paddingHorizontal: Theme.padding.paddingHorizontal}}>
-        <View style={styles.hourlyTempContainer}>
-        <HourlyTempBlock/>
-        <HourlyTempBlock/>
-        <HourlyTempBlock/>
-        <HourlyTempBlock/>
-        <HourlyTempBlock/>
-        </View>
-        <View style={styles.weatherRowContainer}>
-          <WeatherRow day='Monday'/>
-          <WeatherRow day='Tuesday'/>
-          <WeatherRow day='Wednesday'/>
-          <WeatherRow day='Thursday'/>
-          <WeatherRow day='Friday'/>
-          <WeatherRow day='Saturday'/>
-          <WeatherRow day='Sunday'/>
+    <View style={{height: '100%'}}>
+
+        {/* Graphics under layer */}
+        <View style={{height: '100%'}}>
+          <Glassmorphism/>
         </View>
 
+        <View style={{height: '100%', width: '100%', position: 'absolute'}}>
+          <SafeAreaView/>
+          <View style={styles.heading}>
+            <Header/>
+          </View>
+
+        <View style={{height: height * 0.45, position: 'absolute', top: height / 2 , width: '100%', paddingHorizontal: Theme.padding.paddingHorizontal}}>
+          <View style={styles.hourlyTempContainer}>
+          <HourlyTempBlock/>
+          <HourlyTempBlock/>
+          <HourlyTempBlock/>
+          <HourlyTempBlock/>
+          <HourlyTempBlock/>
+          </View>
+          <View style={styles.weatherRowContainer}>
+            <WeatherRow day='Monday'/>
+            <WeatherRow day='Tuesday'/>
+            <WeatherRow day='Wednesday'/>
+            <WeatherRow day='Thursday'/>
+            <WeatherRow day='Friday'/>
+            <WeatherRow day='Saturday'/>
+            <WeatherRow day='Sunday'/>
+          </View>
+        </View>
+
+        </View>
+
+
+        {/* Blur Box Content Container */}
 
       </View>
     
 
-    </SafeAreaView>
   );
 };
 
@@ -64,11 +73,10 @@ const styles = StyleSheet.create({
       height: '20%',
     },
     weatherRowContainer: {
-      height: '80%'
+      height: '80%',
     },
     hourlyTempContainer: {
       height: '20%',
-
       flexDirection: 'row'
     }
 

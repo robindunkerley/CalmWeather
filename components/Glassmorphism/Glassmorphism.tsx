@@ -38,9 +38,9 @@ export const Sun = () => {
 }
 
 const { width, height } = Dimensions.get("window");
-const center = vec(width / 2, height / 4);
+const center = vec(width / 2, height / 2);
 const r = center.x - 32;
-const rect = { x: 0, y: height / 4, width: width, height: height / 2 };
+const rect = { x: 0, y: height / 2, width: width, height: height / 2 };
 
 
 export const Glassmorphism = () => {
