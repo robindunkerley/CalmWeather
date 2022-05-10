@@ -1,26 +1,32 @@
 import { StyleSheet, Text, View, Dimensions, TextInput } from 'react-native'
 import * as Icon from 'react-native-feather'
 import Theme from '../../theme/Theme'
-import React from 'react'
+import React, { useCallback } from 'react'
 
 const {height, width} = Dimensions.get('screen')
 
 type Props = {}
 
 const Header = (props: Props) => {
-    const [time, setTime] = React.useState('Day')
+    const [input, setInput] = React.useState('')
+    const [loading, setLoading] = React.useState(false)
+    const [data, setData] = React.useState([])
 
-    
+    const fetchDataHandler = useCallback(() => {
+
+    }, [])
+
   return (
     <View style={styles.container}>
         <View style={styles.searchContainer}>
             <View style={styles.textInputContainer}>
-                <Icon.Search height={18} color='#ff6347'/>
-                <TextInput style={styles.textInput} placeholder='...Search a location'/>
+                <Icon.Search height={18} color='skyblue'/>
+                <TextInput onChangeText={text => setInput(text)} value={input} style={styles.textInput} placeholder='Search a location...'/>
             </View>
         </View>
         <View style={styles.locationContainer}>
             <Text style={styles.locationText}>London</Text>
+            <Text style={styles.date}>10th May 2022</Text>
         </View>
         <View style={styles.weatherDetailsContainer}>
             <View style={styles.weatherDetailsBlock}>
@@ -30,7 +36,6 @@ const Header = (props: Props) => {
                 <Text style={styles.weatherType}>Sunny</Text>
             </View>
             <View style={styles.weatherDetailsBlock}>
-
             </View>
         </View>
       
@@ -59,22 +64,36 @@ const styles = StyleSheet.create({
         height: '80%',
         width: '90%',
         borderRadius: 80,
-        borderWidth: 0.5,
-        borderColor: 'lightgrey'
+        shadowColor: 'black',
+        shadowOffset: {
+          width: 0,
+          height: 1,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+        elevation: 1,
     },
     textInput: {
         flex: 1,
         marginHorizontal: '2%',
+        height: '100%',
+        justifyContent: 'center',
         fontSize: 12
     },
     locationContainer: {
-        height: '20%',
+        height: '25%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
         paddingHorizontal: Theme.padding.paddingHorizontal
     },
     locationText: {
         color: 'black', 
         fontSize: 26, 
         fontWeight: '700',
+    },
+    date: {
+        fontWeight: '200'
     },
     weatherDetailsContainer: {
         paddingHorizontal: Theme.padding.paddingHorizontal,

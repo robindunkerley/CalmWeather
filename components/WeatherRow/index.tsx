@@ -15,7 +15,6 @@ type Props = {
 }
 
 
-
 const WeatherRow = (props: Props) => {
   return (
     <View style={styles.weatherRow}>

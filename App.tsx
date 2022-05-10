@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 
 import { Glassmorphism } from './components/Glassmorphism';
+import { Icey } from './components/Glassmorphism/components/graphics/Icey';
+import { Sunny } from './components/Glassmorphism/components/graphics/Sunny';
 import Header from './components/heading';
 import HourlyTempBlock from './components/HourlyTempBlock/Index';
 import WeatherRow from './components/WeatherRow';
@@ -29,7 +31,8 @@ const App = () => {
 
         {/* Graphics under layer */}
         <View style={{height: '100%'}}>
-          <Glassmorphism/>
+          {/* <Sunny/> */}
+          <Icey/>
         </View>
 
         <View style={{height: '100%', width: '100%', position: 'absolute'}}>
@@ -38,7 +41,7 @@ const App = () => {
             <Header/>
           </View>
 
-        <View style={{height: height * 0.45, position: 'absolute', top: height / 2 , width: '100%', paddingHorizontal: Theme.padding.paddingHorizontal}}>
+        <View style={{height: height * 0.45, position: 'absolute', top: height / 2 , width: '100%', paddingHorizontal: Theme.padding.paddingHorizontal, marginTop: 10}}>
           <View style={styles.hourlyTempContainer}>
           <HourlyTempBlock/>
           <HourlyTempBlock/>
