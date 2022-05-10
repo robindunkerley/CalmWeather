@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View, Dimensions, TextInput } from 'react-native'
+import * as Icon from 'react-native-feather'
 import Theme from '../../theme/Theme'
 import React from 'react'
 
@@ -14,12 +15,23 @@ const Header = (props: Props) => {
     <View style={styles.container}>
         <View style={styles.searchContainer}>
             <View style={styles.textInputContainer}>
-                <TextInput style={styles.textInput} placeholder='Search'/>
+                <Icon.Search height={18} color='#ff6347'/>
+                <TextInput style={styles.textInput} placeholder='...Search a location'/>
             </View>
-            
         </View>
         <View style={styles.locationContainer}>
             <Text style={styles.locationText}>London</Text>
+        </View>
+        <View style={styles.weatherDetailsContainer}>
+            <View style={styles.weatherDetailsBlock}>
+                <Text style={styles.temperature}>23°</Text>
+            </View>
+            <View style={styles.weatherDetailsBlock}>
+                <Text style={styles.weatherType}>Sunny</Text>
+            </View>
+            <View style={styles.weatherDetailsBlock}>
+
+            </View>
         </View>
       
     </View>
@@ -30,9 +42,7 @@ export default Header
 
 const styles = StyleSheet.create({
     container: {
-        height: '100%',
-        borderWidth: 1, 
-
+        height: '100%'
     },
     searchContainer: {
         height: '30%',
@@ -40,24 +50,50 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     textInputContainer: {
+        flexDirection: 'row',
         backgroundColor: 'white',
         justifyContent: 'center',
-        paddingHorizontal: 20,
+        alignItems: 'center',
+        paddingHorizontal: 10,
         height: '80%',
         width: '90%',
-        borderRadius: 80
+        borderRadius: 80,
+        borderWidth: 0.5,
+        borderColor: 'lightgrey'
     },
     textInput: {
-        borderWidth: 1
+        flex: 1,
+        marginHorizontal: '2%',
+        fontSize: 12
     },
     locationContainer: {
-        borderWidth: 1,
-        borderColor: 'white',
-        alignItems: 'center'
+        height: '20%',
+        paddingHorizontal: Theme.padding.paddingHorizontal
     },
     locationText: {
-        color: 'white', 
-        fontSize: 40, 
-        fontWeight: '700'
+        color: 'black', 
+        fontSize: 25, 
+        fontWeight: '700',
+
+    },
+    weatherDetailsContainer: {
+        paddingHorizontal: Theme.padding.paddingHorizontal,
+        flexDirection: 'row',
+        height: '50%'
+    },
+    weatherDetailsBlock: {
+        width: '33%',
+
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    temperature: {
+        fontSize: 28,
+        fontWeight: '200'
+    },
+    weatherType: {
+        fontSize: 28,
+        fontWeight: '200'
     }
+
 })
