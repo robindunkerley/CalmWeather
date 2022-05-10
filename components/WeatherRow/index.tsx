@@ -19,17 +19,17 @@ const WeatherRow = (props: Props) => {
   return (
     <View style={styles.weatherRow}>
         <View style={styles.dayContainer}>
-            <Text>{props.day}</Text>
+            <Text style={styles.dayText}>{props.day}</Text>
         </View>
         <View style={styles.iconContainer}>
-            <Icon.Sun height={18} color='white'/>
+            <Icon.Sun strokeWidth={1.5} height={17} color='white'/>
         </View>
         <View style={styles.minMaxTempContainer}>
             <View style={styles.maxTemp}>
-                <Text>21</Text>
+                <Text style={styles.maxTempText}>21</Text>
             </View>
             <View style={styles.minTemp}>
-                <Text>12</Text>
+                <Text style={styles.minTempText}>12</Text>
             </View>
         </View>
     </View>
@@ -42,10 +42,17 @@ const styles = StyleSheet.create({
     weatherRow: {
         height: '14.28%',
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderBottomWidth: 0.25,
+        borderColor: 'white'
     },
     dayContainer: {
         width: '45%'
+    },
+    dayText: {
+        color: 'white',
+        fontWeight: '200',
+        fontSize: 16
     },
     iconContainer: {
         width: '35%'
@@ -56,13 +63,21 @@ const styles = StyleSheet.create({
         width: '20%'
     },
     maxTemp: {
-        borderRightWidth: 0.5,
+        borderRightWidth: 0.25,
+        borderColor: 'white',
         flex: 0.5,
         alignItems: 'center'
+    },
+    maxTempText: {
+        color: 'white',
+        fontWeight: '300'
     },
     minTemp: {
       flex: 0.5,
       alignItems: 'center'
-
+    },
+    minTempText: {
+        fontWeight: '400',
+        color: 'lightgrey'
     }
 })

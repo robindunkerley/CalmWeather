@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Dimensions } from 'react-native'
 import React from 'react'
 
 type Props = {}
@@ -7,10 +7,10 @@ const HourlyTempBlock = (props: Props) => {
   return (
     <View style={styles.container}>
         <View style={styles.hourContainer}>
-            <Text>1pm</Text>
+            <Text style={styles.hourText}>1pm</Text>
         </View>
         <View style={styles.tempContainer}>
-            <Text>23°</Text>
+            <Text style={styles.tempText}>23°</Text>
         </View> 
     </View>
   )
@@ -32,5 +32,15 @@ const styles = StyleSheet.create({
     },
     tempContainer: {
 
+    },
+    hourText: {
+        color: 'grey',
+        fontWeight: '300',
+        fontSize: 14
+    },
+    tempText: {
+        color: 'white',
+        fontWeight: '300',
+        fontSize: 16
     }
 })

@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 import { Glassmorphism } from './components/Glassmorphism';
+import { Cloudy } from './components/Glassmorphism/components/graphics/Cloudy';
 import { Icey } from './components/Glassmorphism/components/graphics/Icey';
 import { Sunny } from './components/Glassmorphism/components/graphics/Sunny';
 import Header from './components/heading';
@@ -32,6 +33,7 @@ const App = () => {
         {/* Graphics under layer */}
         <View style={{height: '100%'}}>
           {/* <Sunny/> */}
+          {/* <Cloudy/> */}
           <Icey/>
         </View>
 
@@ -41,7 +43,7 @@ const App = () => {
             <Header/>
           </View>
 
-        <View style={{height: height * 0.45, position: 'absolute', top: height / 2 , width: '100%', paddingHorizontal: Theme.padding.paddingHorizontal, marginTop: 10}}>
+        <View style={{height: height * 0.45, position: 'absolute', top: height / 2 , width: '100%', paddingHorizontal: Theme.padding.paddingHorizontal, marginTop: 10, justifyContent: 'space-around'}}>
           <View style={styles.hourlyTempContainer}>
           <HourlyTempBlock/>
           <HourlyTempBlock/>
@@ -79,8 +81,11 @@ const styles = StyleSheet.create({
       height: '80%',
     },
     hourlyTempContainer: {
-      height: '20%',
-      flexDirection: 'row'
+      height: '18%',
+      flexDirection: 'row', 
+      borderRadius: 10,
+      borderColor: 'white',
+      backgroundColor: 'rgba(255, 255, 255, 0.2)'
     }
 
 });

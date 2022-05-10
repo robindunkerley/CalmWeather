@@ -2,26 +2,41 @@ import { StyleSheet, Text, View, Dimensions, TextInput } from 'react-native'
 import * as Icon from 'react-native-feather'
 import Theme from '../../theme/Theme'
 import React, { useCallback } from 'react'
+import axios from 'axios'
 
 const {height, width} = Dimensions.get('screen')
 
 type Props = {}
 
 const Header = (props: Props) => {
-    const [input, setInput] = React.useState('')
+    const [location, setLocation] = React.useState<string>('')
     const [loading, setLoading] = React.useState(false)
     const [data, setData] = React.useState([])
 
+    const api = {
+        key: 'be154bff6e53966d9989f9d210b4dc6b',
+        baseUrl: 'https://api.openweathermap.org/data/2.5/'
+    }
+
+    const url = `http://api.openweathermap.org/data/2.5/:weather?q=${location}&appid=${api.key}`
+
     const fetchDataHandler = useCallback(() => {
 
-    }, [])
+        axios({
+            method: "GET",
+            url: url,
+        }).then(res => {
+            console.log(res)
+        })
+ 
+    }, [api.key, location])
 
   return (
     <View style={styles.container}>
         <View style={styles.searchContainer}>
             <View style={styles.textInputContainer}>
                 <Icon.Search height={18} color='skyblue'/>
-                <TextInput onChangeText={text => setInput(text)} value={input} style={styles.textInput} placeholder='Search a location...'/>
+                <TextInput onChangeText={text => setLocation(text)} value={location} style={styles.textInput} onChange={event => setLocation(event.target.value)} onSubmitEditing={fetchDataHandler} placeholder='Search a location...'/>
             </View>
         </View>
         <View style={styles.locationContainer}>
@@ -85,15 +100,16 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingHorizontal: Theme.padding.paddingHorizontal
+        paddingHorizontal: Theme.padding.paddingHorizontal,
     },
     locationText: {
-        color: 'black', 
+        color: 'white', 
         fontSize: 26, 
         fontWeight: '700',
     },
     date: {
-        fontWeight: '200'
+        fontWeight: '300',
+        color: 'white', 
     },
     weatherDetailsContainer: {
         paddingHorizontal: Theme.padding.paddingHorizontal,
@@ -106,10 +122,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     temperature: {
+        color: 'white', 
         fontSize: 28,
         fontWeight: '200'
     },
     weatherType: {
+        color: 'white', 
         fontSize: 28,
         fontWeight: '200'
     }
