@@ -1,62 +1,42 @@
-import { StyleSheet, Text, View, Dimensions, TextInput } from 'react-native'
+import { StyleSheet, Text, View, Dimensions, TextInput,  TextInputProps } from 'react-native'
 import * as Icon from 'react-native-feather'
 import Theme from '../../theme/Theme'
 import React, { useCallback } from 'react'
 import axios from 'axios'
+import CityDate from './parts/CityDate'
+import WeatherDescription from './parts/WeatherDescription'
 
 const {height, width} = Dimensions.get('screen')
 
-type Props = {}
+interface Props extends TextInputProps {
+data: any
+}
 
 const Header = (props: Props) => {
-    const [location, setLocation] = React.useState<string>('')
-    const [loading, setLoading] = React.useState(false)
-    const [data, setData] = React.useState([])
-
-    const api = {
-        key: 'be154bff6e53966d9989f9d210b4dc6b',
-        baseUrl: 'https://api.openweathermap.org/data/2.5/'
-    }
-
-    const url = `http://api.openweathermap.org/data/2.5/:weather?q=${location}&appid=${api.key}`
-
-    const fetchDataHandler = useCallback(() => {
-
-        axios({
-            method: "GET",
-            url: url,
-        }).then(res => {
-            console.log(res)
-        })
- 
-    }, [api.key, location])
+    console.log(props.data)
 
   return (
     <View style={styles.container}>
         <View style={styles.searchContainer}>
             <View style={styles.textInputContainer}>
                 <Icon.Search height={18} color='skyblue'/>
-                <TextInput onChangeText={text => setLocation(text)} value={location} style={styles.textInput} onChange={event => setLocation(event.target.value)} onSubmitEditing={fetchDataHandler} placeholder='Search a location...'/>
+                <TextInput style={styles.textInput} placeholder='Search a city...' {...props}/>
             </View>
         </View>
-        <View style={styles.locationContainer}>
-            <Text style={styles.locationText}>London</Text>
-            <Text style={styles.date}>10th May 2022</Text>
-        </View>
-        <View style={styles.weatherDetailsContainer}>
-            <View style={styles.weatherDetailsBlock}>
-                <Text style={styles.temperature}>23°</Text>
-            </View>
-            <View style={styles.weatherDetailsBlock}>
-                <Text style={styles.weatherType}>Sunny</Text>
-            </View>
-            <View style={styles.weatherDetailsBlock}>
-            </View>
-        </View>
+        {!!props.data && (
+            <>
+                <CityDate location={props.data?.name}/>
+                <WeatherDescription description={props.data?.weather[0].description} temperature={Math.round(props.data?.main.temp)}/>
+            </>
+        )}
+
+  
       
     </View>
   )
 }
+
+
 
 export default Header
 
@@ -95,41 +75,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         fontSize: 12
     },
-    locationContainer: {
-        height: '25%',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        paddingHorizontal: Theme.padding.paddingHorizontal,
-    },
-    locationText: {
-        color: 'white', 
-        fontSize: 26, 
-        fontWeight: '700',
-    },
-    date: {
-        fontWeight: '300',
-        color: 'white', 
-    },
-    weatherDetailsContainer: {
-        paddingHorizontal: Theme.padding.paddingHorizontal,
-        flexDirection: 'row',
-        height: '30%'
-    },
-    weatherDetailsBlock: {
-        width: '33%',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    temperature: {
-        color: 'white', 
-        fontSize: 28,
-        fontWeight: '200'
-    },
-    weatherType: {
-        color: 'white', 
-        fontSize: 28,
-        fontWeight: '200'
-    }
+
 
 })

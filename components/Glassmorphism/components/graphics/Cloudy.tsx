@@ -54,7 +54,6 @@ import {
     return (
       <Canvas style={{ flex: 1 }}>
         <Fill color='#aad4e5' />
-
     
         <Circle c={center} r={radius}>
           <LinearGradient

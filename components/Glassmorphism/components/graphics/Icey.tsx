@@ -32,11 +32,11 @@ import {
       [progress]
     );
     const end = useDerivedValue(
-      () => add(center, vec(0, mix(progress.current, r, r / 3))),
+      () => add(center, vec(0, mix(progress.current, r, r * 3))),
       []
     );
     const radius = useDerivedValue(
-      () => mix(progress.current, r, r / 50),
+      () => mix(progress.current, r, r / 20),
       [progress]
     );
   

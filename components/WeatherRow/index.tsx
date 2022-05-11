@@ -22,7 +22,7 @@ const WeatherRow = (props: Props) => {
             <Text style={styles.dayText}>{props.day}</Text>
         </View>
         <View style={styles.iconContainer}>
-            <Icon.Sun strokeWidth={1.5} height={17} color='white'/>
+            <Icon.Sun strokeWidth={1.5} height={16} color='white'/>
         </View>
         <View style={styles.minMaxTempContainer}>
             <View style={styles.maxTemp}>
@@ -47,7 +47,9 @@ const styles = StyleSheet.create({
         borderColor: 'white'
     },
     dayContainer: {
-        width: '45%'
+        width: '45%',
+        height: '100%',
+        justifyContent: 'center'
     },
     dayText: {
         color: 'white',
@@ -55,9 +57,13 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     iconContainer: {
-        width: '35%'
+        width: '35%',
+        justifyContent: 'center',
+        height: '100%'
     },
     minMaxTempContainer: {
+        height: '100%',
+        alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'space-around',
         width: '20%'

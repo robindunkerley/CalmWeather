@@ -81,7 +81,7 @@ import {
     return (
     <>
       <Canvas style={{ flex: 1}}>
-        <Fill color="skyblue" />
+        <Fill color="black" />
         <Circle c={center} r={radius}>
           <LinearGradient
             start={start}
@@ -89,8 +89,9 @@ import {
             colors={["yellow", "red"]}
           />
         </Circle>
+
         <BackdropFilter filter={
-            <Blur blur={0}>
+            <Blur blur={100}>
             <DisplacementMap channelX={'r'} channelY={'r'} scale={50}>
                 <Turbulence freqX={0.01} freqY={0.09} octaves={4}/>
             </DisplacementMap>
@@ -98,6 +99,7 @@ import {
         } clip={rect}>
             <Fill color="rgba(0, 0, 0, 0.1)" />
         </BackdropFilter>
+
       </Canvas>
      </>
     );
