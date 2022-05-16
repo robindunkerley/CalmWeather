@@ -14,6 +14,7 @@ const CityDate = ({location}: Props) => {
   return (
     <View style={styles.locationContainer}>
         <Text style={styles.locationText}>{location}</Text>
+
         <Text style={styles.date}>{day} / {month + 1} / {year}</Text>
     </View>
   )

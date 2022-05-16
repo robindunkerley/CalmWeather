@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Dimensions } from 'react-native'
 import * as Icon from 'react-native-feather'
 import React from 'react'
-import Theme from '../../theme/Theme'
+import Theme from '../../../../theme/Theme'
 
 const {width, height} = Dimensions.get('screen')
 
@@ -14,15 +14,32 @@ type Props = {
     icon: string
 }
 
+const ICON_SIZE = 16;
+const STROKE_WIDTH = 1.5;
+const ICON_COLOR = 'white'
+
+const icons = {
+    "Clouds": <Icon.Cloud strokeWidth={STROKE_WIDTH} height={ICON_SIZE} color={ICON_COLOR}/>,
+    "Clear": <Icon.Sun strokeWidth={STROKE_WIDTH} height={ICON_SIZE} color={ICON_COLOR}/>,
+    "Rain": <Icon.CloudRain strokeWidth={STROKE_WIDTH} height={ICON_SIZE} color={ICON_COLOR}/>,
+    "Thunderstorm": <Icon.CloudLightning strokeWidth={STROKE_WIDTH} height={ICON_SIZE} color={ICON_COLOR}/>,
+    "Snow": <Icon.CloudSnow strokeWidth={STROKE_WIDTH} height={ICON_SIZE} color={ICON_COLOR}/>,
+    "Drizzle": <Icon.CloudDrizzle strokeWidth={STROKE_WIDTH} height={ICON_SIZE} color={ICON_COLOR}/>,
+    "Mist": <Icon.Cloud strokeWidth={STROKE_WIDTH} height={ICON_SIZE} color={ICON_COLOR}/>
+}
+
+
 
 const WeatherRow = (props: Props) => {
+
+
   return (
     <View style={styles.weatherRow}>
         <View style={styles.dayContainer}>
             <Text style={styles.dayText}>{props.day}</Text>
         </View>
         <View style={styles.iconContainer}>
-            <Icon.Sun strokeWidth={1.5} height={16} color='white'/>
+            {icons[props.icon]}
         </View>
         <View style={styles.minMaxTempContainer}>
             <View style={styles.maxTemp}>

@@ -18,8 +18,9 @@ import { Icey } from './components/Glassmorphism/components/graphics/Icey';
 import { Sunny } from './components/Glassmorphism/components/graphics/Sunny';
 import Header from './components/heading';
 import HourlyTempBlock from './components/HourlyTempBlock/Index';
-import WeatherRow from './components/WeatherRow';
+import WeatherRow from './components/DailyForecastGrid/parts/WeatherRow';
 import Theme from './theme/Theme';
+import DailyForecastGrid from './components/DailyForecastGrid';
 const {height, width} = Dimensions.get('screen')
 
 
@@ -27,10 +28,31 @@ const App = () => {
   const [location, setLocation] = React.useState<string>('')
   const [loading, setLoading] = React.useState(false)
   const [data, setData] = React.useState<any>([])
+  const [dailyHourlyData, setDailyHourly] = React.useState({})
+
+
 
   const api = {
     key: '75fa491ce9bcddf0985eee1a9f4a8678',
     baseUrl: 'https://api.openweathermap.org/data/2.5/'
+}
+
+const getFiveHours = (data) => {
+  let unixHours = []
+  for(let i = 0; i < 5; i++) {
+    unixHours.push(data[i].dt)
+  }
+  return unixHours.map((unix) => {
+    return new Date(unix * 1000)
+  })
+}
+
+const getWeek = (data) => {
+  let week = [];
+    for(let i = 1; i < 7; i++) {
+      week.push(data[i])
+    }
+  return week
 }
 
 const fetchDataHandler = useCallback(() => {
@@ -38,11 +60,35 @@ const fetchDataHandler = useCallback(() => {
         method: "GET",
         url: `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${api.key}`,
     }).then(res => {
-        console.log(res.data)
         setData(res.data)
+        const lat = data?.coord.lat
+        const lon = data?.coord.lon
+        axios({
+          method: "GET",
+          url: `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,alerts&units=metric&appid=${api.key}`
+        }).then(onecall => {
+          // const date = new Date(onecall.data.hourly)
+
+          const currentData = onecall.data.current
+          const hourlyArray = onecall.data.hourly
+          const fiveHours = getFiveHours(hourlyArray)
+          const week = getWeek(onecall.data.daily)
+          setDailyHourly({current: currentData, dailyForecast: week})
+
+        })
     }).catch(e => console.dir(e)).finally(() => {setLoading(false)})
 
-}, [api.key, location])
+
+
+}, [api.key, location, dailyHourlyData])
+  console.log(dailyHourlyData)
+
+
+
+
+
+
+
 
 
   return (
@@ -51,8 +97,8 @@ const fetchDataHandler = useCallback(() => {
         {/* Graphics under layer */}
         <View style={{height: '100%'}}>
           {/* <Sunny/> */}
-          <Cloudy/>
-          {/* <Icey/> */}
+          {/* <Cloudy/> */}
+          <Icey/>
 
         </View>
         <View style={{height: '100%', width: '100%', position: 'absolute'}}>
@@ -70,21 +116,13 @@ const fetchDataHandler = useCallback(() => {
 
         <View style={{height: height * 0.45, position: 'absolute', top: height / 2 , width: '100%', paddingHorizontal: Theme.padding.paddingHorizontal, marginTop: 10, justifyContent: 'space-around'}}>
           <View style={styles.hourlyTempContainer}>
-          <HourlyTempBlock/>
-          <HourlyTempBlock/>
-          <HourlyTempBlock/>
-          <HourlyTempBlock/>
-          <HourlyTempBlock/>
+            <HourlyTempBlock/>
+            <HourlyTempBlock/>
+            <HourlyTempBlock/>
+            <HourlyTempBlock/>
+            <HourlyTempBlock/>
           </View>
-          <View style={styles.weatherRowContainer}>
-            <WeatherRow day='Monday'/>
-            <WeatherRow day='Tuesday'/>
-            <WeatherRow day='Wednesday'/>
-            <WeatherRow day='Thursday'/>
-            <WeatherRow day='Friday'/>
-            <WeatherRow day='Saturday'/>
-            <WeatherRow day='Sunday'/>
-          </View>
+          <DailyForecastGrid data={dailyHourlyData}/>
         </View> 
         </>
           
@@ -110,9 +148,6 @@ const fetchDataHandler = useCallback(() => {
 const styles = StyleSheet.create({
     heading: {
       height: '20%',
-    },
-    weatherRowContainer: {
-      height: '80%',
     },
     hourlyTempContainer: {
       height: '18%',

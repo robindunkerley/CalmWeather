@@ -16,6 +16,9 @@ const WeatherDescription = (props: Props) => {
         <View style={styles.weatherTypeBlock}>
             <Text style={styles.weatherType}>{props.description}</Text>
         </View>
+        <View style={styles.temperatureBlock}>
+       
+        </View>
     </View>
   )
 }
@@ -25,20 +28,19 @@ export default WeatherDescription
 const styles = StyleSheet.create({
 
     weatherDetailsContainer: {
-        paddingHorizontal: Theme.padding.paddingHorizontal,
         flexDirection: 'row',
         justifyContent: 'center',
-        height: '30%'
+        height: '30%',
     },
     temperatureBlock: {
         alignItems: 'center',
         justifyContent: 'center',
-        width: '50%'
-    },
+        width: '25%'
+    },  
     weatherTypeBlock: {
-        alignItems: 'flex-start',
+        alignItems: 'center',
         justifyContent: 'center',
-        width: '75%'
+        flex: 1
     },
     temperature: {
         color: 'white', 
