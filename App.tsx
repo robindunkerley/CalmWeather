@@ -17,10 +17,12 @@ import { Cloudy } from './components/Glassmorphism/components/graphics/Cloudy';
 import { Icey } from './components/Glassmorphism/components/graphics/Icey';
 import { Sunny } from './components/Glassmorphism/components/graphics/Sunny';
 import Header from './components/heading';
-import HourlyTempBlock from './components/HourlyTempBlock/Index';
+import HourlyTempBlock from './components/HourlyForecast/parts/HourlyTempBlock/Index';
 import WeatherRow from './components/DailyForecastGrid/parts/WeatherRow';
 import Theme from './theme/Theme';
 import DailyForecastGrid from './components/DailyForecastGrid';
+import HourlyForecast from './components/HourlyForecast';
+import { Offset } from '@shopify/react-native-skia';
 const {height, width} = Dimensions.get('screen')
 
 
@@ -37,19 +39,29 @@ const App = () => {
     baseUrl: 'https://api.openweathermap.org/data/2.5/'
 }
 
-const getFiveHours = (data) => {
+const getFiveHours = (data, offset) => {
   let unixHours = []
   for(let i = 0; i < 5; i++) {
     unixHours.push(data[i].dt)
   }
   return unixHours.map((unix) => {
-    return new Date(unix * 1000)
+    return new Date((unix + offset) * 1000)
   })
 }
 
+const createHourlyForecast = (data) => {
+  let rtn = []
+  for(let i = 0; i < 5; i++) {
+    rtn.push(Math.round(data[i].temp))
+  }
+  return rtn
+}
+
+
+
 const getWeek = (data) => {
   let week = [];
-    for(let i = 1; i < 7; i++) {
+    for(let i = 0; i < 7; i++) {
       week.push(data[i])
     }
   return week
@@ -68,12 +80,14 @@ const fetchDataHandler = useCallback(() => {
           url: `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,alerts&units=metric&appid=${api.key}`
         }).then(onecall => {
           // const date = new Date(onecall.data.hourly)
-
           const currentData = onecall.data.current
           const hourlyArray = onecall.data.hourly
-          const fiveHours = getFiveHours(hourlyArray)
+          const timeOffset = onecall.data["timezone_offset"]
+          const fiveHours = getFiveHours(hourlyArray, timeOffset)
+          const hourlyTemperature = createHourlyForecast(hourlyArray)
           const week = getWeek(onecall.data.daily)
-          setDailyHourly({current: currentData, dailyForecast: week})
+          setDailyHourly({dailyForecast: week, hourlyForecast: {'hours': fiveHours, 'temps': hourlyTemperature}})
+    
 
         })
     }).catch(e => console.dir(e)).finally(() => {setLoading(false)})
@@ -81,7 +95,8 @@ const fetchDataHandler = useCallback(() => {
 
 
 }, [api.key, location, dailyHourlyData])
-  console.log(dailyHourlyData)
+
+
 
 
 
@@ -101,6 +116,7 @@ const fetchDataHandler = useCallback(() => {
           <Icey/>
 
         </View>
+
         <View style={{height: '100%', width: '100%', position: 'absolute'}}>
           <SafeAreaView/>
         {!!loading ? (
@@ -115,13 +131,7 @@ const fetchDataHandler = useCallback(() => {
         </View>
 
         <View style={{height: height * 0.45, position: 'absolute', top: height / 2 , width: '100%', paddingHorizontal: Theme.padding.paddingHorizontal, marginTop: 10, justifyContent: 'space-around'}}>
-          <View style={styles.hourlyTempContainer}>
-            <HourlyTempBlock/>
-            <HourlyTempBlock/>
-            <HourlyTempBlock/>
-            <HourlyTempBlock/>
-            <HourlyTempBlock/>
-          </View>
+          <HourlyForecast data={dailyHourlyData['hourlyForecast']}/>
           <DailyForecastGrid data={dailyHourlyData}/>
         </View> 
         </>
@@ -149,13 +159,7 @@ const styles = StyleSheet.create({
     heading: {
       height: '20%',
     },
-    hourlyTempContainer: {
-      height: '18%',
-      flexDirection: 'row', 
-      borderRadius: 10,
-      borderColor: 'white',
-      backgroundColor: 'rgba(255, 255, 255, 0.2)'
-    }
+
 
 });
 

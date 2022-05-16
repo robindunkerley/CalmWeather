@@ -12,6 +12,8 @@ const minMaxTempContainerWidth = width - (dayContainerWidth + iconContainerWidth
 type Props = {
     day: string
     icon: string
+    minTemp: number
+    maxTemp: number
 }
 
 const ICON_SIZE = 16;
@@ -43,10 +45,10 @@ const WeatherRow = (props: Props) => {
         </View>
         <View style={styles.minMaxTempContainer}>
             <View style={styles.maxTemp}>
-                <Text style={styles.maxTempText}>21</Text>
+                <Text style={styles.maxTempText}>{props.maxTemp}</Text>
             </View>
             <View style={styles.minTemp}>
-                <Text style={styles.minTempText}>12</Text>
+                <Text style={styles.minTempText}>{props.minTemp}</Text>
             </View>
         </View>
     </View>

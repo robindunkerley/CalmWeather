@@ -24,8 +24,8 @@ const Header = (props: Props) => {
         </View>
         {!!props.data && (
             <>
-                {/* <CityDate location={props.data?.name}/>
-                <WeatherDescription description={props.data?.weather[0].description} temperature={Math.round(props.data?.main.temp)}/> */}
+                <CityDate location={props.data?.name}/>
+                <WeatherDescription description={props.data?.weather[0].description} temperature={Math.round(props.data?.main.temp)}/>
             </>
         )}
 

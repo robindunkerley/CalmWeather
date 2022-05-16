@@ -1,16 +1,19 @@
 import { StyleSheet, Text, View, Dimensions } from 'react-native'
 import React from 'react'
 
-type Props = {}
+type Props = {
+    hour: string
+    temp: number | string
+}
 
 const HourlyTempBlock = (props: Props) => {
   return (
     <View style={styles.container}>
         <View style={styles.hourContainer}>
-            <Text style={styles.hourText}>1pm</Text>
+            <Text style={styles.hourText}>{props.hour}</Text>
         </View>
         <View style={styles.tempContainer}>
-            <Text style={styles.tempText}>23°</Text>
+            <Text style={styles.tempText}>{props.temp}°</Text>
         </View> 
     </View>
   )
