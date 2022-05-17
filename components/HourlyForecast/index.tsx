@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { SegmentedControlIOSComponent, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import HourlyTempBlock from './parts/HourlyTempBlock/Index'
 import { data } from '../../data'
@@ -7,6 +7,8 @@ type Props = {
     data: any
     timezone: number
 }
+
+
 
 
 function formatAMPM(date) {
@@ -28,10 +30,12 @@ const HourlyForecast = (props: Props) => {
   return (
     <View style={styles.hourlyTempContainer}>
         {props.data.map((hour) => {
-
-          const hourConverted = formatAMPM(new Date((hour.dt + props.timezone) * 1000))
+          const convertedHour = new Date((hour.dt + props.timezone) * 1000)
+          const timeOfDay = convertedHour.getHours() > 18 ? 'night' : 'day'
+          const hourConverted = formatAMPM(convertedHour)
           const temperature = Math.round(hour.temp)
-          return <HourlyTempBlock key={hour.dt} hour={hourConverted} temp={temperature}/>
+          const icon = hour.weather[0].main
+          return <HourlyTempBlock key={hour.dt} icon={icon} hour={hourConverted} temp={temperature} timeOfDay={timeOfDay}/>
           
         })}
     </View>

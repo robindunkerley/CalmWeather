@@ -21,6 +21,7 @@ import Theme from './theme/Theme';
 import DailyForecastGrid from './components/DailyForecastGrid';
 import HourlyForecast from './components/HourlyForecast';
 import { Offset } from '@shopify/react-native-skia';
+import { ClearNight } from './components/Glassmorphism/components/graphics/ClearNight';
 const {height, width} = Dimensions.get('screen')
 
 
@@ -62,19 +63,33 @@ const getData = (lat: number, lon: number) => {
 }
 
 React.useState(() => {
-  console.log('update')
+
 }, [data])
 
 const hourlyData = data.hourly.slice(0, 5)
 const dailyData = data.daily.slice(0, 7)
 const timezoneOffset = data['timezone_offset']
 const currentData = hourlyData[0]
+const convertedCurrentHour = new Date((currentData.dt + timezoneOffset) * 1000).getHours()
+const timeOfDay = convertedCurrentHour > 18 ? 'night' : 'day'
 
 
 
-
-
-
+const findBackground = (weatherType: string, temperature: number, timeOfDay: string) => {
+  let rtn = <Cloudy/>
+  if(timeOfDay === 'day') {
+    if(temperature <= 0) {
+      rtn = <Icey/>
+    } else if(weatherType ==='Clouds') {
+      rtn = <Cloudy/>
+    } else if (weatherType === 'Clear' ) {
+      rtn = <Sunny/>
+    } 
+  } else {
+    rtn = <ClearNight/>
+  }
+  return rtn
+}
 
 
 
@@ -85,10 +100,7 @@ const currentData = hourlyData[0]
 
         {/* Graphics under layer */}
         <View style={{height: '100%'}}>
-          {/* <Sunny/> */}
-          {/* <Cloudy/> */}
-          <Icey/>
-
+          {findBackground(currentData.weather[0].main, currentData.temp, timeOfDay)}
         </View>
 
         <View style={{height: '100%', width: '100%', position: 'absolute'}}>
