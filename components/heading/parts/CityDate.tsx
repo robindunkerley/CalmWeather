@@ -4,16 +4,18 @@ import Theme from '../../../theme/Theme'
 
 type Props = {
     location: string
+    timezone: number
+    date: number
 }
 
-const CityDate = ({location}: Props) => {
-    const date = new Date()
+const CityDate = (props: Props) => {
+    const date = new Date((props.date + props.timezone) * 1000)
     const day = date.getUTCDate()
     const month = date.getUTCMonth()
     const year = date.getUTCFullYear()
   return (
     <View style={styles.locationContainer}>
-        <Text style={styles.locationText}>{location}</Text>
+        <Text style={styles.locationText}>{props.location}</Text>
 
         <Text style={styles.date}>{day} / {month + 1} / {year}</Text>
     </View>

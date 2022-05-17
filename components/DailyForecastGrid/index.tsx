@@ -56,7 +56,7 @@ const daily = {
 }
 
 const DailyForecastGrid = (props: Props) => {
-    const {dailyForecast, current} = props.data
+
 
 
 
@@ -64,19 +64,18 @@ const DailyForecastGrid = (props: Props) => {
   return (
     <View style={styles.weatherRowContainer}>
 
-        {dailyForecast.map((data) => {
+        {props.data.map((data) => {
             const day = new Date(data.dt * 1000).getDay()
-            const dailyWeather = data
             const dailyWeatherIcon = data.weather[0].main
-            const minTemp = Math.round(dailyWeather.temp['min'])
-            const maxTemp = Math.round(dailyWeather.temp['max'])
-
+            const minTemp = Math.round(data.temp['min'])
+            const maxTemp = Math.round(data.temp['max'])
             return <WeatherRow day={WEEK_DAYS[day]} icon={dailyWeatherIcon} minTemp={minTemp} maxTemp={maxTemp}/>
         })}
 
     </View>
   )
 }
+
 
 export default DailyForecastGrid
 

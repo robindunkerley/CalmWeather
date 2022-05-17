@@ -5,6 +5,7 @@ import { data } from '../../data'
 
 type Props = {
     data: any
+    timezone: number
 }
 
 
@@ -19,18 +20,20 @@ function formatAMPM(date) {
   }
 
 const HourlyForecast = (props: Props) => {
-    console.log(props.data)
+
 
 
 
 
   return (
     <View style={styles.hourlyTempContainer}>
-        {props.data['hours'].map((date, index) => {
-            const hour = formatAMPM(date)
-            return <HourlyTempBlock hour={hour} temp={props.data['temps'][index]}/>
-        })}
+        {props.data.map((hour) => {
 
+          const hourConverted = formatAMPM(new Date((hour.dt + props.timezone) * 1000))
+          const temperature = Math.round(hour.temp)
+          return <HourlyTempBlock key={hour.dt} hour={hourConverted} temp={temperature}/>
+          
+        })}
     </View>
   )
 }

@@ -10,15 +10,13 @@ import {
   View,
   Dimensions,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
-
-import { Glassmorphism } from './components/Glassmorphism';
+import { data as apiCall } from './data';
 import { Cloudy } from './components/Glassmorphism/components/graphics/Cloudy';
 import { Icey } from './components/Glassmorphism/components/graphics/Icey';
 import { Sunny } from './components/Glassmorphism/components/graphics/Sunny';
 import Header from './components/heading';
-import HourlyTempBlock from './components/HourlyForecast/parts/HourlyTempBlock/Index';
-import WeatherRow from './components/DailyForecastGrid/parts/WeatherRow';
 import Theme from './theme/Theme';
 import DailyForecastGrid from './components/DailyForecastGrid';
 import HourlyForecast from './components/HourlyForecast';
@@ -29,72 +27,48 @@ const {height, width} = Dimensions.get('screen')
 const App = () => {
   const [location, setLocation] = React.useState<string>('')
   const [loading, setLoading] = React.useState(false)
-  const [data, setData] = React.useState<any>([])
+  const [data, setData] = React.useState<any>({...apiCall})
+  const [latLon, setLatLon] = React.useState({lat: 51.5072, lon: 0.1276})
   const [dailyHourlyData, setDailyHourly] = React.useState({})
 
 
 
-  const api = {
+const api = {
     key: '75fa491ce9bcddf0985eee1a9f4a8678',
-    baseUrl: 'https://api.openweathermap.org/data/2.5/'
-}
-
-const getFiveHours = (data, offset) => {
-  let unixHours = []
-  for(let i = 0; i < 5; i++) {
-    unixHours.push(data[i].dt)
-  }
-  return unixHours.map((unix) => {
-    return new Date((unix + offset) * 1000)
-  })
-}
-
-const createHourlyForecast = (data) => {
-  let rtn = []
-  for(let i = 0; i < 5; i++) {
-    rtn.push(Math.round(data[i].temp))
-  }
-  return rtn
 }
 
 
-
-const getWeek = (data) => {
-  let week = [];
-    for(let i = 0; i < 7; i++) {
-      week.push(data[i])
-    }
-  return week
-}
 
 const fetchDataHandler = useCallback(() => {
     axios({
         method: "GET",
         url: `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=${api.key}`,
     }).then(res => {
-        setData(res.data)
-        const lat = data?.coord.lat
-        const lon = data?.coord.lon
-        axios({
-          method: "GET",
-          url: `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,alerts&units=metric&appid=${api.key}`
-        }).then(onecall => {
-          // const date = new Date(onecall.data.hourly)
-          const currentData = onecall.data.current
-          const hourlyArray = onecall.data.hourly
-          const timeOffset = onecall.data["timezone_offset"]
-          const fiveHours = getFiveHours(hourlyArray, timeOffset)
-          const hourlyTemperature = createHourlyForecast(hourlyArray)
-          const week = getWeek(onecall.data.daily)
-          setDailyHourly({dailyForecast: week, hourlyForecast: {'hours': fiveHours, 'temps': hourlyTemperature}})
-    
+        const lat = res.data.coord.lat
+        const lon = res.data.coord.lon
+        setLatLon({lat: lat, lon: lon})
+        getData(lat, lon)
+      }).catch(e => console.dir(e)).finally(() => {setLoading(false)})
 
-        })
-    }).catch(e => console.dir(e)).finally(() => {setLoading(false)})
+}, [location, data])
 
+const getData = (lat: number, lon: number) => {
+  axios({
+    method: "GET",
+    url: `https://api.openweathermap.org/data/2.5/onecall?lat=${latLon.lat}&lon=${latLon.lon}&exclude=minutely,alerts&units=metric&appid=${api.key}`
+    }).then((res) => {
+      setData({...res.data})
+    })
+}
 
+React.useState(() => {
+  console.log('update')
+}, [data])
 
-}, [api.key, location, dailyHourlyData])
+const hourlyData = data.hourly.slice(0, 5)
+const dailyData = data.daily.slice(0, 7)
+const timezoneOffset = data['timezone_offset']
+const currentData = hourlyData[0]
 
 
 
@@ -127,19 +101,18 @@ const fetchDataHandler = useCallback(() => {
           <>
 
         <View style={styles.heading}>
-            <Header data={data} onChangeText={text => setLocation(text)} value={location} onChange={event => setLocation(event.target.value)} onSubmitEditing={fetchDataHandler}/>
+            <Header data={currentData} onChangeText={text => setLocation(text)} value={location} onChange={event => setLocation(event.target.value)} timezone={timezoneOffset} onSubmitEditing={fetchDataHandler}/>
         </View>
 
         <View style={{height: height * 0.45, position: 'absolute', top: height / 2 , width: '100%', paddingHorizontal: Theme.padding.paddingHorizontal, marginTop: 10, justifyContent: 'space-around'}}>
-          <HourlyForecast data={dailyHourlyData['hourlyForecast']}/>
-          <DailyForecastGrid data={dailyHourlyData}/>
+          <HourlyForecast data={hourlyData} timezone={timezoneOffset}/>
+          <DailyForecastGrid data={dailyData}/>
         </View> 
         </>
           
         )}
 
         </View>
-
 
 
       </View>
